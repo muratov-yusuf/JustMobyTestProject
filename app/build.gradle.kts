@@ -1,6 +1,10 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.devtools.ksp)
 }
 
 android {
@@ -51,4 +55,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.network)
+    implementation(libs.coil)
+    implementation(libs.blur)
+    implementation(libs.timber)
 }
