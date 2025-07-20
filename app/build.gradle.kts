@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.secrets.plugin)
 }
 
 android {
@@ -46,6 +47,12 @@ android {
     }
 }
 
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "secrets.default.properties"
+}
+
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -64,5 +71,6 @@ dependencies {
     implementation(libs.bundles.network)
     implementation(libs.coil)
     implementation(libs.blur)
+    implementation(libs.shimmer)
     implementation(libs.timber)
 }
