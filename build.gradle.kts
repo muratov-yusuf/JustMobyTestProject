@@ -6,4 +6,5 @@ plugins {
     alias(libs.plugins.navigation.safeargs) apply false
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.devtools.ksp) apply false
+    alias(libs.plugins.secrets.plugin) apply false
 }

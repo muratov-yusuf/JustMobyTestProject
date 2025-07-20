@@ -1,60 +1,83 @@
 package dev.ymuratov.jm_test_project.feature.movies.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dev.ymuratov.jm_test_project.R
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import dagger.hilt.android.AndroidEntryPoint
+import dev.ymuratov.jm_test_project.databinding.FragmentMoviesBinding
+import dev.ymuratov.jm_test_project.feature.movies.ui.action.MoviesAction
+import dev.ymuratov.jm_test_project.feature.movies.ui.adapter.GenresAdapter
+import dev.ymuratov.jm_test_project.feature.movies.ui.state.MoviesState
+import dev.ymuratov.jm_test_project.feature.movies.ui.viewmodel.MoviesViewModel
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [MoviesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+@AndroidEntryPoint
 class MoviesFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var _binding: FragmentMoviesBinding? = null
+    private val binding: FragmentMoviesBinding
+        get() = _binding ?: throw RuntimeException("FragmentMoviesBinding is null")
+
+    private val moviesViewModel: MoviesViewModel by viewModels()
+    private val genresAdapter = GenresAdapter()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentMoviesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        genresAdapter.apply {
+            onGenreMoreClickListener = {/* TODO */ }
+            onMovieClickListener = {/* TODO */ }
+        }
+
+        with(binding) {
+            moviesRV.adapter = genresAdapter
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    moviesViewModel.uiState.collect(::handeState)
+                }
+                launch {
+                    moviesViewModel.uiAction.collect(::handleAction)
+                }
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movies, container, false)
+    private fun handeState(uiState: MoviesState) {
+        with(uiState) {
+            with(binding) {
+                genresAdapter.submitList(genres)
+            }
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MoviesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MoviesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun handleAction(uiAction: MoviesAction) {
+        when (uiAction) {
+            else -> {}
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
