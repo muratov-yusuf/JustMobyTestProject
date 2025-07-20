@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "JustMobyTestProject"
 include(":app")
+include(":renderscript-toolkit")

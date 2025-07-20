@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import dev.ymuratov.jm_test_project.databinding.FragmentMoviesBinding
 import dev.ymuratov.jm_test_project.feature.movies.ui.action.MoviesAction
@@ -38,7 +39,9 @@ class MoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         genresAdapter.apply {
             onGenreMoreClickListener = {/* TODO */ }
-            onMovieClickListener = {/* TODO */ }
+            onMovieClickListener = { movie ->
+                findNavController().navigate(MoviesFragmentDirections.actionMoviesFragmentToMovieInfoFragment(movie.id))
+            }
         }
 
         with(binding) {

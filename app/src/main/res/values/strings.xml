@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Lumo</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="genre_see_more_button">See more</string>
+
+    <string name="movie_info_budget_label">Budget</string>
+    <string name="movie_info_revenue_label">Revenue</string>
 </resources>

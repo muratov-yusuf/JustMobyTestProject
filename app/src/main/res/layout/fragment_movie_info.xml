@@ -1,14 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_primary"
     tools:context=".feature.info.ui.fragment.MovieInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/movieInfoPosterIV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/background_secondary"
+            app:layout_constraintDimensionRatio="W, 1:1.07"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/MovieInfoImageShapeStyle" />
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent">
+
+                <com.avito.android.blurlayout.BlurLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:blurLayout_blurRadius="25"
+                    app:blurLayout_targetChildBackgroundCornerRadius="100dp">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/movieInfoBackButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@color/icon_button_background_primary"
+                        android:src="@drawable/ic_arrow_back" />
+                </com.avito.android.blurlayout.BlurLayout>
+
+                <com.avito.android.blurlayout.BlurLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="16dp"
+                    app:blurLayout_blurRadius="25"
+                    app:blurLayout_targetChildBackgroundCornerRadius="100dp">
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/movieInfoTeaserButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@color/icon_button_background_primary"
+                        android:src="@drawable/ic_youtube" />
+                </com.avito.android.blurlayout.BlurLayout>
+            </com.google.android.material.appbar.MaterialToolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <TextView
+            android:id="@+id/movieInfoNameTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="4dp"
+            android:textAppearance="@style/MovieInfoNameTextStyle"
+            app:layout_constraintBottom_toTopOf="@+id/movieInfoDetailsTV"
+            tools:text="Movie Name" />
+
+        <TextView
+            android:id="@+id/movieInfoDetailsTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="32dp"
+            android:textAppearance="@style/MovieInfoMediumBodyTextStyle"
+            app:layout_constraintBottom_toBottomOf="@id/movieInfoPosterIV"
+            tools:text="Movie Details" />
+
+        <LinearLayout
+            android:id="@+id/movieInfoMoneyContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/movieInfoPosterIV">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/movieInfoBudgetTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/MovieInfoMediumBodyTextStyle"
+                    android:textColor="@color/accent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/movie_info_budget_label"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/MovieInfoSmallLabelTextStyle" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/movieInfoRevenueTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/MovieInfoMediumBodyTextStyle"
+                    android:textColor="@color/accent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/movie_info_revenue_label"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/MovieInfoSmallLabelTextStyle" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginTop="12dp"
+            app:dividerColor="#33FFFFFF"
+            app:layout_constraintTop_toBottomOf="@id/movieInfoMoneyContainer" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
