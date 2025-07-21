@@ -70,6 +70,7 @@ dependencies {
 
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.network)
+    implementation(libs.paging.runtime)
     implementation(libs.coil)
     implementation(libs.blur)
     implementation(libs.shimmer)

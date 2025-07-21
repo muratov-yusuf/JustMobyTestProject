@@ -5,6 +5,7 @@
 
     <string name="movie_info_budget_label">Budget</string>
     <string name="movie_info_revenue_label">Revenue</string>
+    <string name="movie_info_overview_title">Overview</string>
     <string name="movie_info_directors_title">Directors</string>
     <string name="movie_info_producers_title">Producers</string>
     <string name="movie_info_writers_title">Writers</string>

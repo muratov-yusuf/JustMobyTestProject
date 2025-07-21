@@ -38,7 +38,11 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         genresAdapter.apply {
-            onGenreMoreClickListener = {/* TODO */ }
+            onGenreMoreClickListener = { genre ->
+                findNavController().navigate(
+                    MoviesFragmentDirections.actionMoviesFragmentToMoviesByGenreBottomSheet(genre.id)
+                )
+            }
             onMovieClickListener = { movie ->
                 findNavController().navigate(MoviesFragmentDirections.actionMoviesFragmentToMovieInfoFragment(movie.id))
             }

@@ -13,6 +13,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -58,10 +59,7 @@ class MovieInfoFragment : Fragment() {
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
-            binding.appBarLayout.layoutParams =
-                (binding.appBarLayout.layoutParams as ViewGroup.MarginLayoutParams).apply {
-                    topMargin = systemBars.top
-                }
+            binding.movieInfoMainToolbar.updatePadding(top = systemBars.top)
             insets
         }
 
@@ -103,6 +101,7 @@ class MovieInfoFragment : Fragment() {
                     movieInfoDetailsTV.setText(spannable, TextView.BufferType.SPANNABLE)
                     movieInfoBudgetTV.text = formatMoneyShort(movieInfo.budget)
                     movieInfoRevenueTV.text = formatMoneyShort(movieInfo.revenue)
+                    movieInfoOverviewTV.text = movieInfo.overview
                 }
                 val directors = crew.filter { it.job == "Director" }
                 movieInfoDirectorsLabelTV.isVisible = directors.isNotEmpty()
@@ -125,7 +124,7 @@ class MovieInfoFragment : Fragment() {
                     text = writers.joinToString { it.name }
                 }
 
-                val composers = crew.filter { it.job == "Composer" }
+                val composers = crew.filter { it.job!!.contains("Composer") }
                 movieInfoComposersLabelTV.isVisible = composers.isNotEmpty()
                 movieInfoComposersTV.apply {
                     isVisible = composers.isNotEmpty()
