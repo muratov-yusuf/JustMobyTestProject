@@ -23,7 +23,7 @@ class App : Application(), ImageLoaderFactory {
 
     override fun newImageLoader(): ImageLoader {
         return ImageLoader.Builder(this).memoryCache {
-            MemoryCache.Builder(this).maxSizePercent(0.2).build()
+            MemoryCache.Builder(this).maxSizePercent(0.5).build()
         }.diskCache {
             DiskCache.Builder().directory(cacheDir.resolve("image_cache")).maxSizeBytes(5 * 1024 * 1024).build()
         }.logger(DebugLogger()).respectCacheHeaders(false).build()
