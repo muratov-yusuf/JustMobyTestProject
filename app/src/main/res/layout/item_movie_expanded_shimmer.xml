@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.supercharge.shimmerlayout.ShimmerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/movieExpandedShimmerContainer"
+    android:layout_width="match_parent"
+    android:layout_height="192dp"
+    android:layout_marginHorizontal="4dp"
+    app:shimmer_animation_duration="1200"
+    app:contentPadding="0dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="@color/background_secondary"/>
+
+</io.supercharge.shimmerlayout.ShimmerLayout>

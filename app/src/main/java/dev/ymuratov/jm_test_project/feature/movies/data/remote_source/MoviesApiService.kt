@@ -1,4 +1,4 @@
-package dev.ymuratov.jm_test_project.feature.movies.data.api
+package dev.ymuratov.jm_test_project.feature.movies.data.remote_source
 
 import dev.ymuratov.jm_test_project.feature.movies.data.model.genre.GenresResponseDto
 import dev.ymuratov.jm_test_project.feature.movies.data.model.movies.MoviesResponseDto
@@ -13,12 +13,12 @@ interface MoviesApiService {
 
     @GET("discover/movie?include_adult=false&include_video=false&language=en-US&sort_by=popularity.desc")
     suspend fun getMoviesByGenre(
-        @Query(RESPONSE_QUERY_PAGE) page: Int = 1,
-        @Query(RESPONSE_QUERY_WITH_GENRES) withGenres: List<Int>,
+        @Query(REQUEST_QUERY_WITH_GENRES) withGenres: List<Int>,
+        @Query(REQUEST_QUERY_PAGE) page: Int = 1
     ): Response<MoviesResponseDto>
 
     companion object {
-        const val RESPONSE_QUERY_PAGE = "page"
-        const val RESPONSE_QUERY_WITH_GENRES = "with_genres"
+        const val REQUEST_QUERY_PAGE = "page"
+        const val REQUEST_QUERY_WITH_GENRES = "with_genres"
     }
 }

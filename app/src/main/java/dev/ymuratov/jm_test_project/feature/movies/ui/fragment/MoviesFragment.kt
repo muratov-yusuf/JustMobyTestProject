@@ -6,15 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.ymuratov.jm_test_project.databinding.FragmentMoviesBinding
 import dev.ymuratov.jm_test_project.feature.movies.ui.action.MoviesAction
 import dev.ymuratov.jm_test_project.feature.movies.ui.adapter.GenresAdapter
+import dev.ymuratov.jm_test_project.feature.movies.ui.adapter.GenresShimmerAdapter
+import dev.ymuratov.jm_test_project.feature.movies.ui.event.MoviesEvent
+import dev.ymuratov.jm_test_project.feature.movies.ui.fragment.MoviesFragmentDirections.Companion.actionMoviesFragmentToMovieInfoFragment
+import dev.ymuratov.jm_test_project.feature.movies.ui.fragment.MoviesFragmentDirections.Companion.actionMoviesFragmentToMoviesByGenreBottomSheet
 import dev.ymuratov.jm_test_project.feature.movies.ui.state.MoviesState
 import dev.ymuratov.jm_test_project.feature.movies.ui.viewmodel.MoviesViewModel
 import kotlinx.coroutines.launch
@@ -27,7 +34,6 @@ class MoviesFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentMoviesBinding is null")
 
     private val moviesViewModel: MoviesViewModel by viewModels()
-    private val genresAdapter = GenresAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
@@ -36,13 +42,11 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        genresAdapter.apply {
-            onGenreMoreClickListener = {/* TODO */ }
-            onMovieClickListener = {/* TODO */ }
-        }
 
-        with(binding) {
-            moviesRV.adapter = genresAdapter
+        binding.moviesRetryButton.setOnClickListener {
+            moviesViewModel.onEvent(MoviesEvent.RetryLoadData)
+            binding.moviesRV.isVisible = true
+            binding.moviesNoInternetContainer.isVisible = false
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
@@ -64,15 +68,33 @@ class MoviesFragment : Fragment() {
 
     private fun handeState(uiState: MoviesState) {
         with(uiState) {
+            val adapter = if (genres.isEmpty()) {
+                GenresShimmerAdapter().apply { submitList(List(3) { "" }) }
+            } else {
+                GenresAdapter().apply {
+                    onGenreMoreClickListener = { genre ->
+                        findNavController().navigate(actionMoviesFragmentToMoviesByGenreBottomSheet(genre.id))
+                    }
+                    onMovieClickListener = { movie ->
+                        findNavController().navigate(actionMoviesFragmentToMovieInfoFragment(movie.id))
+                    }
+                    submitList(genres)
+                }
+            }
             with(binding) {
-                genresAdapter.submitList(genres)
+                moviesRV.adapter = adapter
             }
         }
     }
 
+
     private fun handleAction(uiAction: MoviesAction) {
         when (uiAction) {
-            else -> {}
+            is MoviesAction.ShowError -> {
+                Snackbar.make(binding.root, uiAction.exception.message ?: "Unknown error", Snackbar.LENGTH_SHORT).show()
+                binding.moviesRV.isVisible = false
+                binding.moviesNoInternetContainer.isVisible = true
+            }
         }
     }
 

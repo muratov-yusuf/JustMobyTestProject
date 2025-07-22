@@ -35,7 +35,7 @@ class GenresAdapter : ListAdapter<GenreModel, GenreViewHolder>(GenreDiffCallback
         }
         with(holder.binding) {
             genreNameTV.text = item.name
-            genreMoreButton.setOnClickListener { onGenreMoreClickListener?.invoke(item) }
+            moviesRetryButton.setOnClickListener { onGenreMoreClickListener?.invoke(item) }
             genreMoviesRV.adapter = rvAdapter
         }
 

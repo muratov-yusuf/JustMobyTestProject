@@ -2,11 +2,15 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="accent">#8E73FE</color>
 
     <color name="background_primary">#18171C</color>
-    <color name="background_secondary">#8018171C</color>
+    <color name="background_secondary">#29282D</color>
 
     <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#969598</color>
     <color name="button_background_primary">#29282D</color>
     <color name="button_text_primary">#8E73FE</color>
+
+    <color name="icon_button_background_primary">#1AFFFFFF</color>
 </resources>
