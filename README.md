@@ -46,7 +46,7 @@
    git clone https://github.com/muratov-yusuf/JustMobyTestProject.git
 
 2. Откройте проектв Android Studio.
-3. Убедитесь, что в файле gradle.properties в полях *buildToolsVersion* и *28.2.13676358* стоят версии, которые установлены на вашем ПК. Проверить версии можно в SDK Manager -> SDK Tools.
+3. Убедитесь, что в файле gradle.properties в полях *buildToolsVersion* и *ndkVersion* стоят версии, которые установлены на вашем ПК. Проверить версии можно в SDK Manager -> SDK Tools.
 4. Создайте в корневой папке проекта файл secrets.properties и добавьте туда `TMDB_API_KEY="[ВАШ_API_КЛЮЧ]"`.
 5. Запустите проект на устройстве или эмуляторе.
 
