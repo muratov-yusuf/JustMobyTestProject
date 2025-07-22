@@ -23,7 +23,7 @@
             tools:text="Action" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/genreMoreButton"
+            android:id="@+id/moviesRetryButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="0dp"

@@ -28,7 +28,7 @@ class MoviesViewModel @Inject constructor(
 
     fun onEvent(event: MoviesEvent) {
         when (event) {
-            else -> {}
+            MoviesEvent.RetryLoadData -> getGenres()
         }
     }
 
@@ -43,6 +43,8 @@ class MoviesViewModel @Inject constructor(
                 val genreId = genre.id
                 launch { loadMoviesByGenre(genreId) }
             }
+        }.onFailure { exception ->
+            _uiAction.send(MoviesAction.ShowError(exception))
         }
     }
 
@@ -54,6 +56,8 @@ class MoviesViewModel @Inject constructor(
                 }
                 currentState.copy(genres = updatedGenres)
             }
+        }.onFailure { exception ->
+            _uiAction.send(MoviesAction.ShowError(exception))
         }
     }
 }

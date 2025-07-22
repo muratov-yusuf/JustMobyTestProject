@@ -10,7 +10,6 @@ import java.math.RoundingMode
 data class MovieInfoResponseDto(
     val adult: Boolean,
     @SerialName("backdrop_path") val backdropPath: String,
-    @SerialName("belongs_to_collection") val belongsToCollection: BelongsToCollection,
     val budget: Int,
     val genres: List<Genre>,
     val homepage: String,

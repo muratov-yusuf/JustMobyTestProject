@@ -21,10 +21,10 @@ class MovieInfoRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMovieVideos(movieId: Int): Result<MovieVideoModel> = remoteRequest {
+    override suspend fun getMovieVideos(movieId: Int): Result<MovieVideoModel?> = remoteRequest {
         apiService.getMovieVideos(movieId).handle { videos ->
-            val video = videos.results.first { video -> video.type == "Teaser" && video.site == "YouTube" }
-            MovieVideoModel(video.id, video.key)
+            val video = videos.results.firstOrNull { video -> video.type == "Teaser" && video.site == "YouTube" }
+            if (video == null) null else MovieVideoModel(video.id, video.key)
         }
     }
 

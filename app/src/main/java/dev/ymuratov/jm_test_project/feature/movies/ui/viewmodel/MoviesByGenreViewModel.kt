@@ -3,7 +3,6 @@ package dev.ymuratov.jm_test_project.feature.movies.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.ymuratov.jm_test_project.feature.movies.domain.repository.MoviesRepository
 import dev.ymuratov.jm_test_project.feature.movies.ui.state.MoviesByGenreState
@@ -26,7 +25,7 @@ class MoviesByGenreViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.subscribeToMoviesByGenre(listOf(genreId)).cachedIn(viewModelScope).collectLatest { movies ->
+            repository.subscribeToMoviesByGenre(listOf(genreId)).collectLatest { movies ->
                 _uiState.update { it.copy(movies = movies) }
             }
         }

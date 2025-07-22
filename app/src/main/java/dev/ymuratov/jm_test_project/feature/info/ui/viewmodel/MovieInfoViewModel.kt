@@ -31,7 +31,7 @@ class MovieInfoViewModel @Inject constructor(
 
     fun onEvent(event: MovieInfoEvent) {
         when (event) {
-            else -> {}
+            MovieInfoEvent.RetryLoadData -> initMovieInfoLoading()
         }
     }
 
@@ -43,15 +43,21 @@ class MovieInfoViewModel @Inject constructor(
         movieInfoRepository.getMovieInfo(movieId).onSuccess { movieInfo ->
             _uiState.update { it.copy(movieInfo = movieInfo) }
             getCredits()
-        }.onFailure {}
+        }.onFailure {
+            _uiAction.send(MovieInfoAction.ShowError(exception = it))
+        }
         movieInfoRepository.getMovieVideos(movieId).onSuccess { videoModel ->
-            _uiState.update { it.copy(videoId = videoModel.videoId) }
+            _uiState.update { it.copy(videoId = videoModel?.videoId) }
+        }.onFailure {
+            _uiAction.send(MovieInfoAction.ShowError(exception = it))
         }
     }
 
     private fun getCredits() = viewModelScope.launch {
         movieInfoRepository.getMovieCredits(movieId).onSuccess { credits ->
             _uiState.update { it.copy(cast = credits.cast, crew = credits.crew) }
+        }.onFailure {
+            _uiAction.send(MovieInfoAction.ShowError(exception = it))
         }
     }
 }

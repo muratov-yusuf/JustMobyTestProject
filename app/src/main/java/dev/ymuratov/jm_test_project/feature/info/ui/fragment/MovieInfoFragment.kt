@@ -19,7 +19,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import coil.load
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.ymuratov.jm_test_project.R
 import dev.ymuratov.jm_test_project.core.ui.CenteredImageSpan
@@ -28,6 +30,7 @@ import dev.ymuratov.jm_test_project.databinding.FragmentMovieInfoBinding
 import dev.ymuratov.jm_test_project.feature.info.ui.action.MovieInfoAction
 import dev.ymuratov.jm_test_project.feature.info.ui.adapter.CastAdapter
 import dev.ymuratov.jm_test_project.feature.info.ui.adapter.HorizontalPaddingDecoration
+import dev.ymuratov.jm_test_project.feature.info.ui.event.MovieInfoEvent
 import dev.ymuratov.jm_test_project.feature.info.ui.state.MovieInfoState
 import dev.ymuratov.jm_test_project.feature.info.ui.viewmodel.MovieInfoViewModel
 import kotlinx.coroutines.launch
@@ -53,8 +56,18 @@ class MovieInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val paddingPx = (16 * resources.displayMetrics.density).toInt()
-        binding.movieInfoCastRV.addItemDecoration(HorizontalPaddingDecoration(paddingPx, paddingPx))
-        binding.movieInfoCastRV.adapter = castAdapter
+        with(binding) {
+            movieInfoCastRV.addItemDecoration(HorizontalPaddingDecoration(paddingPx, paddingPx))
+            movieInfoCastRV.adapter = castAdapter
+            movieInfoBackButton.setOnClickListener {
+                findNavController().popBackStack()
+            }
+            movieInfoRetryButton.setOnClickListener {
+                movieInfoViewModel.onEvent(MovieInfoEvent.RetryLoadData)
+                binding.progressBar.isVisible = false
+                movieInfoNoInternetContainer.isVisible = false
+            }
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -78,6 +91,9 @@ class MovieInfoFragment : Fragment() {
     private fun handeState(uiState: MovieInfoState) {
         with(uiState) {
             with(binding) {
+                progressBar.isVisible = movieInfo == null
+                movieInfoMainContainer.isVisible = movieInfo != null
+
                 movieInfoTeaserButton.isVisible = videoId != null
                 movieInfoTeaserButton.setOnClickListener {
                     videoId?.let { videoId -> navigateToYT(videoId) }
@@ -138,7 +154,12 @@ class MovieInfoFragment : Fragment() {
 
     private fun handleAction(uiAction: MovieInfoAction) {
         when (uiAction) {
-            else -> {}
+            is MovieInfoAction.ShowError -> {
+                Snackbar.make(binding.root, uiAction.exception.message ?: "Unknown error", Snackbar.LENGTH_SHORT).show()
+                binding.movieInfoMainContainer.isVisible = false
+                binding.progressBar.isVisible = false
+                binding.movieInfoNoInternetContainer.isVisible = true
+            }
         }
     }
 

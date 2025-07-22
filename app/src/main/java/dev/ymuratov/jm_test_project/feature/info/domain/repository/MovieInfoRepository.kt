@@ -7,6 +7,6 @@ import dev.ymuratov.jm_test_project.feature.info.domain.model.MovieVideoModel
 interface MovieInfoRepository {
 
     suspend fun getMovieInfo(movieId: Int): Result<MovieInfoModel>
-    suspend fun getMovieVideos(movieId: Int): Result<MovieVideoModel>
+    suspend fun getMovieVideos(movieId: Int): Result<MovieVideoModel?>
     suspend fun getMovieCredits(movieId: Int): Result<MovieCreditsModel>
 }
