@@ -1,6 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.navigation.safeargs)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.devtools.ksp)
+    alias(libs.plugins.secrets.plugin)
 }
 
 android {
@@ -37,11 +42,19 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        viewBinding = true
         buildConfig = true
     }
 }
 
+secrets {
+    propertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "secrets.default.properties"
+}
+
+
 dependencies {
+    implementation(project(":renderscript-toolkit"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -51,4 +64,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.network)
+    implementation(libs.paging.runtime)
+    implementation(libs.coil)
+    implementation(libs.blur)
+    implementation(libs.shimmer)
+    implementation(libs.timber)
 }
