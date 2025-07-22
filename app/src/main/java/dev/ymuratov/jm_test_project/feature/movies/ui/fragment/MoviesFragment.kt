@@ -15,8 +15,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import dev.ymuratov.jm_test_project.R
 import dev.ymuratov.jm_test_project.databinding.FragmentMoviesBinding
 import dev.ymuratov.jm_test_project.feature.movies.ui.action.MoviesAction
+import dev.ymuratov.jm_test_project.feature.movies.ui.adapter.BannersAdapter
 import dev.ymuratov.jm_test_project.feature.movies.ui.adapter.GenresAdapter
 import dev.ymuratov.jm_test_project.feature.movies.ui.adapter.GenresShimmerAdapter
 import dev.ymuratov.jm_test_project.feature.movies.ui.event.MoviesEvent
@@ -34,6 +36,7 @@ class MoviesFragment : Fragment() {
         get() = _binding ?: throw RuntimeException("FragmentMoviesBinding is null")
 
     private val moviesViewModel: MoviesViewModel by viewModels()
+    private val bannersAdapter = BannersAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
@@ -48,6 +51,9 @@ class MoviesFragment : Fragment() {
             binding.moviesRV.isVisible = true
             binding.moviesNoInternetContainer.isVisible = false
         }
+
+        binding.moviesBannersPager.adapter = bannersAdapter
+        bannersAdapter.submitList(listOf(R.drawable.im_banner_1, R.drawable.im_banner_2))
 
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
